@@ -7,9 +7,17 @@ import android.content.Intent;
 public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+        String action = intent.getAction();
+        
+        // Sadece BOOT_COMPLETED değil, diğer uyandırma sinyallerini de dinleyelim
+        if (Intent.ACTION_BOOT_COMPLETED.equals(action) || 
+            "android.intent.action.QUICKBOOT_POWERON".equals(action) ||
+            "com.htc.intent.action.QUICKBOOT_POWERON".equals(action)) {
+            
             Intent i = new Intent(context, MainActivity.class);
+            // Uygulama kapalıyken açılması için bu bayraklar şart
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             context.startActivity(i);
         }
     }
