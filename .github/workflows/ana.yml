@@ -19,18 +19,18 @@ jobs:
           # 1. Klasörleri oluştur
           mkdir -p app/src/main/java/com/samed/panel
           mkdir -p app/src/main/res/layout
+          mkdir -p app/src/main/res/values
 
-          # 2. Ana dizindeki dosyalarını yerlerine taşı
-          [ -f MainActivity.java ] && mv MainActivity.java app/src/main/java/com/samed/panel/
+          # 2. Ana dizindeki dosyaları yerlerine taşı (Küçük-Büyük harf duyarlı kontrol)
           [ -f mainactivity.java ] && mv mainactivity.java app/src/main/java/com/samed/panel/MainActivity.java
-          [ -f BootReceiver.java ] && mv BootReceiver.java app/src/main/java/com/samed/panel/
+          [ -f MainActivity.java ] && mv MainActivity.java app/src/main/java/com/samed/panel/MainActivity.java
           [ -f bootreceiver.java ] && mv bootreceiver.java app/src/main/java/com/samed/panel/BootReceiver.java
+          [ -f BootReceiver.java ] && mv BootReceiver.java app/src/main/java/com/samed/panel/BootReceiver.java
           [ -f activity_main.xml ] && mv activity_main.xml app/src/main/res/layout/
           [ -f androidmanifest.xml ] && mv androidmanifest.xml app/src/main/AndroidManifest.xml
-          [ -f AndroidManifest.xml ] && mv AndroidManifest.xml app/src/main/AndroidManifest.xml
 
-          # 3. Eksik olan motoru (Wrapper) SIFIRDAN kur
-          gradle wrapper --gradle-version 8.5
+          # 3. GRADLE VERSİYONUNU GÜNCELLE (Hatanın Çözümü Burası)
+          gradle wrapper --gradle-version 9.1
 
           # 4. Ayarları AndroidX için zorla güncelle
           echo "android.useAndroidX=true" > gradle.properties
@@ -39,11 +39,10 @@ jobs:
       - name: APK Derle
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --stacktrace
 
-      - name: APK'yi Yukle
-        if: success()
+      - name: APK'yi Yukle (Artifacts)
         uses: actions/upload-artifact@v4
         with:
-          name: Samed-Panel-APK
+          name: Samed-Panel-Gercek-Konum-APK
           path: app/build/outputs/apk/debug/app-debug.apk
