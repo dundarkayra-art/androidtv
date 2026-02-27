@@ -1,0 +1,21 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Use a version compatible with your Android Studio/Gradle setup
+        classpath "com.android.tools.build:gradle:9.0.1"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// The root project doesn't apply the android plugin itself; it's used in the app module.
+
+// NOTE: the module-level build.gradle contains the plugin declaration and configuration.
